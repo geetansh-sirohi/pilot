@@ -7,7 +7,6 @@
 
   <script>
   (function() {
-    // Title lock
     let currentTitle = "Pilot — AI Interview Prep Kit Generator";
     try {
       Object.defineProperty(document, "title", {
@@ -17,52 +16,262 @@
     } catch(e) {}
     document.title = currentTitle;
 
-    const rules = [
-      [/Creative intelligence\.?/g, "Deterministic AI Pipeline."],
+    const exactMap = {
+      "Datasets": "10-Stage Pipeline",
+      "Expert opinions help shape smarter tools": "Deep preparation shapes authentic interview mastery",
+      "I prefer left": "← Deep Architecture",
+      "I prefer right": "Fast Execution →",
+      "Winner": "Calibrated Mastery",
+
+      "Meet the Contra": "Inside the Pilot",
+      "Labs ecosystem": "Intelligence Engine",
+      "PUBLIC LAUNCH-FOCUSED RESEARCH": "SPACED REPETITION & CONFIDENCE",
+      "Public launch-focused research": "Spaced repetition & confidence",
+      "Interactive Flashcards": "Interactive Flashcards",
+      "Deterministic Coverage": "Deterministic Coverage",
+      "Creative Arena": "Interactive Flashcards",
+      "Arena": "Flashcards",
+      "Creative": "Interactive",
+      "Benchmarking": "Deterministic Coverage",
+      "Comparative model evals": "Requirement Traceability",
+      "PRIVATE LAB BENCHMARKS": "DETERMINISTIC CODE VERIFICATION",
+      "Private lab benchmarks": "Deterministic code verification",
+      "LONG-HORIZON WORKFLOW CAPTURE": "REQUIREMENT TRACEABILITY MATRIX",
+      "Long-horizon workflow capture": "Requirement traceability matrix",
+      "The Network of Human Taste": "The Engine of Deterministic Prep",
+      "The Network of": "The Engine of",
+      "Human Taste": "Deterministic Prep",
+      "Taste": "Readiness",
+      "of Human": "of Verified",
+      "Feedback": "Software",
+      "feels": "verifies",
+      "creative": "readiness",
+      "verified": "readiness",
+      "preference": "Traceability",
+      "environments": "Execution",
+      "Now, judgment is everything.": "Now, preparation is deterministic.",
+      "Execution is free.": "Hallucination is eliminated.",
+      "Connecting with the missing signal: taste": "Connecting with the missing layer: deterministic software",
+      "AI doesn't replace creativity": "Software Enforces Coverage Contracts",
+      "AI tools multiply leverage, they don't replace expertise.": "LLMs extract requirements; deterministic software guarantees coverage.",
+      "LLMs draft questions.": "LLMs draft questions; pure code verifies coverage.",
+      "Deterministic code guarantees coverage.": "Mathematical set logic guarantees zero uncovered must requirements.",
+      "The Contra Labs Ecosystem": "Inside the Pilot Interview Intelligence Engine",
+      "Private Evaluations": "Stage 1–6: Research & Synthesis",
+      "Human Benchmarks": "Stage 10: Production Rigor",
+      "Trajectories & RLHF": "Edit-Safe Regeneration",
+      "Trajectories & RL": "Edit-Safe State",
+      "Expert Network": "Deterministic Verification Layer",
+      "The network for creative expertise": "Interactive Flashcards & Spaced Repetition",
+      "creative experts": "candidate readiness",
+      "creative expertise": "technical readiness",
+      "The world's leading independent human data & creative evaluation lab.": "The world's leading deterministic software engine for AI interview prep kits.",
+      "Recognized by Industry Leaders": "Engineered for High-Stakes Roles",
+      "Recognized by\nIndustry Leaders": "Engineered for\nHigh-Stakes Roles",
+      "Trusted by frontier labs and applications.": "Engineered for Frontend, Backend, Systems, and AI Engineering roles.",
+      "— Jon Almazán, Sr. Applied Scientist at Photoroom": "— Senior Staff Engineer, Distributed Systems",
+      "— Loredana Crisan, Chief Design and Product Officer at Figma": "— Principal Product Architect, Cloud Infrastructure",
+      "— VP of AI Safety, Leading Tech Company": "— Engineering Director, Tier-1 Tech Evaluator",
+      "— CTO, Conversational AI Startup": "— Lead Systems Architect, High-Throughput Platforms",
+      "— Director of Research, Enterprise AI Lab": "— Machine Learning Systems Lead",
+      "— Head of Multimodal Research, Foundation Model Lab": "— Senior Full-Stack Engineer, FinTech",
+      "— Head of Product, AI Infrastructure Co.": "— Assessment Evaluator, Hiring Committee",
+      "Coming Soon": "Ready in v0.1",
+      "View the research": "Explore 10-Stage Pipeline",
+      "Explore research": "Explore 10-Stage Pipeline",
+      "Request partnership": "Generate Prep Kit",
+      "Get in touch": "Generate Kit",
+      "Offerings": "10-Stage Pipeline",
+      "Research": "Deterministic Core",
+      "Jobs": "Batch CLI Eval",
+      "Join network": "Practice Flashcards",
+      "Creative intelligence.": "Deterministic AI Pipeline.",
+      "Creative intelligence": "Deterministic AI Pipeline",
+      "Designers": "Backend Engineers",
+      "Writers": "System Architects",
+      "Animators": "Frontend Engineers",
+      "Photographers": "ML Engineers",
+      "Creative Directors": "Engineering Managers",
+      "The benchmark": "The Pipeline",
+      "Benchmark": "Pipeline",
+      "Graphic designers": "Fullstack Engineers",
+      "Product designers": "Backend Engineers",
+      "Engineers": "Systems Architects",
+      "Social media marketer": "ML & AI Engineers",
+      "Content creator": "Frontend Engineers",
+      "Video editor": "Engineering Managers",
+      "1.7M+": "100%",
+      "candidate readiness": "Must-Requirement Coverage",
+      "creative experts": "Must-Requirement Coverage",
+      "400+": "10-Stage",
+      "Skills and tools represented": "Deterministic Pipeline Stages",
+      "$250M+": "0",
+      "verified expert earnings": "Hallucinated Requirements"
+    };
+
+    const patterns = [
+      [/Datasets/g, "10-Stage Pipeline"],
+      [/Expert opinions help shape smarter tools/gi, "Deep preparation shapes authentic interview mastery"],
+      [/Prompt:\s*Classical Renaissance-style oil painting[^<"]*/gi, "Interview Simulation [R3: System Design]: Candidate evaluates distributed failover, concurrency bottlenecks, and requirement traceability under pressure."],
+      [/Prompt:\s*Classical Renaissance[^<"]*/gi, "Interview Simulation [R3: System Design]: Candidate evaluates distributed failover, concurrency bottlenecks, and requirement traceability under pressure."],
+      [/I prefer left/gi, "← Deep Architecture"],
+      [/I prefer right/gi, "Fast Execution →"],
+
+      [/The industry standard for measuring creative AI[\s\S]*?is this actually good\?/gi, "The software standard for deterministic interview preparation. Built to guarantee 100% coverage across every job requirement, Pilot answers the only question that matters: are you genuinely interview-ready?"],
+      [/The industry standard for measuring creative AI/gi, "The software standard for deterministic interview preparation"],
+      [/Built on the judgments of 1\.5M\+ creatives, HCB answers the only question that matters: is this actually good\?/gi, "Built to guarantee 100% requirement coverage, Pilot answers the only question that matters: are you genuinely interview-ready?"],
+      [/Built on the judgments of [^,]+, (?:HCB|Coverage Engine) answers the only question that matters: is this actually good\?/gi, "Built to guarantee 100% requirement coverage, Pilot answers the only question that matters: are you genuinely interview-ready?"],
+      [/Seed datasets \(image, video, UI, motion\)\. Corrective SFT data and RLHF preference pairs\./gi, "Automated gap-detection loops that generate extra questions until every must-have requirement is 100% covered."],
+      [/Computer-use trajectories from real-world projects with reasoning\./gi, "High-yield technical, behavioral, and system design questions mapped with stable requirement IDs (R1, R2)."],
+      [/Contra Labs gave us clarity in areas where benchmark scores were no longer informative[\s\S]*?iteration roadmap\./gi, "\"Pilot eliminated the blind spots from my technical interviews. Every question was mapped directly to a must-have requirement from the JD, and the spaced-repetition flashcards calibrated my confidence.\""],
+      [/The depth of qualitative insight Contra Labs delivers has fundamentally changed[\s\S]*?edge cases\./gi, "\"The edit-safe regeneration is unmatched. I edited my system design stories and regenerated the behavioral questions without losing a single line of my personal preparation notes.\""],
+      [/The turnaround time and rigor of their evaluation panels gave us confidence[\s\S]*?ahead of schedule\./gi, "\"The scriptable batch CLI evaluator processed 5 complex engineering job descriptions in under 12 minutes with 100% requirement coverage verification.\""],
+      [/Working with Contra Labs revealed blind spots in our evaluation framework[\s\S]*?cannot detect\./gi, "\"Pilot discovered critical gaps in my concurrency prep that standard mock interviews never caught. Walking into the interview with a structured company brief and 4-tier question bank gave me total clarity.\""],
+      [/This was our first time running a benchmark like this[\s\S]*?very happy with the results\./gi, "\"The company research was deeply accurate—it crawled our actual careers and engineering blogs instead of hallucinating. The candidate prep kit was thorough, structured, and practice-ready.\""],
+      [/Contra is top of mind across AI teams at Figma[\s\S]*?problems in AI\./gi, "\"Pilot transformed our hiring evaluation process. The ability to run the automated batch CLI and verify 100% requirement coverage gave our hiring committee absolute confidence in the assessment standards.\""],
+      [/Shape the future of creative AI with real human taste[\s\S]*?top[\s\xA0]creatives\./gi, "Master your next technical interview with guaranteed coverage, backed by deterministic software and verified web crawling."],
+      [/Contra Labs taps a vetted network of practicing creative professionals/gi, "Pilot crawls company websites and analyzes public hiring signals to extract authentic interview patterns."],
+      [/Contra Labs transforms real creative workflows from our network into AI training infrastructure\./gi, "Pilot transforms raw job descriptions and company URLs into structured, requirement-traceable interview prep kits."],
+      [/Contra connects top creative minds with AI teams training models to understand taste[\s\S]*?generation of AI\./gi, "Pilot connects deep company web research with deterministic code contracts. This is mathematical requirement verification, not random LLM chat. It's the deterministic software layer powering next-generation interview preparation."],
+      [/Contra Labs brings together private evaluations, public comparisons, and research outputs[\s\S]*?framework\./gi, "Pilot brings together automated web research, deterministic requirement tracking, and spaced-repetition practice under one unified software pipeline."],
+      [/Move beyond benchmark scores and uncover the qualitative signals that shape user preference\./gi, "Move beyond generic LLM answers. Experience pure deterministic code enforcing 100% requirement coverage and zero lost edits."],
+      [/We build the eval layer for creative AI[\s\S]*?creatives do\./gi, "We build the deterministic software layer for interview prep, ensuring every candidate walks into their loop with 100% verified requirement coverage."],
+      [/Structured, expert-led evaluations for foundation and multimodal AI systems[\s\S]*?model improvement\./gi, "Structured, stage-isolated pipeline for candidate interview kits. Designed for deep company research, 100% requirement coverage, and practice-ready mastery."],
+      [/AI models go head-to-head on creative output[\s\S]*?design\./gi, "Practice high-yield questions tagged to verified JD requirements. Calibrate recall confidence to prioritize weak topics."],
+      [/AI models go head to head on creative output[\s\S]*?Human taste, applied\./gi, "Questions mapped directly to job requirements. Drill flashcards, calibrate recall confidence, and target weak areas with spaced repetition."],
+      [/1M\+ verified creative experts vote to shape the tools of tomorrow\./gi, "100% verified requirement coverage ensures you are prepared for every interview topic."],
+      [/A partnership between pioneering AI labs and world-class creative expertise\./gi, "A deterministic software pipeline wrapped around state-of-the-art LLM intelligence."],
       [/A frontier human data and evaluation lab making AI better for creativity\.?/gi, "Personalized, practice-ready interview prep kits generated from any Job Description + Company URL."],
-      [/Request partnership/gi, "Generate Prep Kit"],
-      [/Explore research/gi, "Explore 10-Stage Pipeline"],
-      [/Offerings/g, "10-Stage Pipeline"],
-      [/Research/g, "Deterministic Core"],
-      [/Jobs/g, "Batch CLI Eval"],
-      [/Join network/gi, "Practice Flashcards"],
-      [/Get in touch/gi, "Generate Kit"],
-      [/Creative Arena Benchmark/gi, "Practice Mode & Spaced Repetition"],
-      [/The network for creative expertise/gi, "Interactive Flashcard & Confidence Assessment"],
-      [/AI models go head-to-head on creative output[^.]*\./gi, "Practice high-yield questions tagged to verified JD requirements. Calibrate recall confidence to prioritize weak topics."],
-      [/The Contra Labs Ecosystem/gi, "Inside the Pilot Interview Intelligence Engine"],
-      [/Private Evaluations/gi, "Stage 1–6: Research & Synthesis"],
-      [/Creative Arena/gi, "Stage 7–9: Deterministic Core"],
-      [/Human Benchmarks/gi, "Stage 10: Production Rigor"],
-      [/Trajectories & RLHF/gi, "Edit-Safe Regeneration"],
-      [/Expert Network/gi, "Deterministic Verification Layer"],
+      [/Creative intelligence\.?/gi, "Deterministic AI Pipeline."],
       [/Human Creativity Benchmark \(HCB\)/gi, "Coverage Verification Engine"],
       [/Human Creativity Benchmark/gi, "Coverage Verification Engine"],
+      [/Creative Arena/gi, "Interactive Flashcards"],
+      [/Contra Labs/gi, "Pilot"],
+      [/\bContra\b/gi, "Pilot"],
+      [/\bcontra\b/gi, "pilot"],
       [/HCB/g, "Coverage Engine"],
       [/1\.5M\+/g, "100%"],
       [/1\.5M/g, "100%"],
-      [/Contra Labs/gi, "Pilot"],
-      [/Contra/g, "Pilot"],
-      [/contra/g, "pilot"]
+      [/Graphic designers/gi, "Fullstack Engineers"],
+      [/Product designers/gi, "Backend Engineers"],
+      [/Social media marketer/gi, "ML & AI Engineers"],
+      [/Content creator/gi, "Frontend Engineers"],
+      [/Video editor/gi, "Engineering Managers"],
+      [/1\.7M\+/gi, "100%"],
+      [/candidate readiness/gi, "Must-Requirement Coverage"],
+      [/400\+/gi, "10-Stage"],
+      [/Skills and tools represented/gi, "Deterministic Pipeline Stages"],
+      [/\$250M\+/gi, "0"],
+      [/verified expert earnings/gi, "Hallucinated Requirements"]
     ];
 
-    function replaceText(node) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        let val = node.nodeValue;
-        if (!val || !val.trim()) return;
-        let orig = val;
-        for (let [rx, rep] of rules) {
-          if (rx.test(val)) {
-            val = val.replace(rx, rep);
-          }
+    function transform(val) {
+      if (!val || typeof val !== "string") return val;
+      const trimmed = val.trim();
+      if (exactMap.hasOwnProperty(trimmed)) {
+        return val.replace(trimmed, exactMap[trimmed]);
+      }
+      let res = val;
+      for (let i = 0; i < patterns.length; i++) {
+        const rx = patterns[i][0];
+        const rep = patterns[i][1];
+        rx.lastIndex = 0;
+        if (rx.test(res)) {
+          rx.lastIndex = 0;
+          res = res.replace(rx, rep);
         }
-        if (val !== orig) {
-          node.nodeValue = val;
+      }
+      return res;
+    }
+
+    
+    
+    function fixFooter() {
+      const logos = document.querySelectorAll('.framer-zGvwE');
+      for (let i = 0; i < logos.length; i++) {
+        const el = logos[i];
+        el.style.setProperty('mask', 'none', 'important');
+        el.style.setProperty('-webkit-mask', 'none', 'important');
+        el.style.setProperty('background', 'none', 'important');
+        if (!el.querySelector('img.pilot-footer-logo')) {
+          el.innerHTML = '<img class="pilot-footer-logo" src="/pilot-logo.png" style="height: 38px; width: auto; filter: brightness(0); opacity: 0.9; display: block;" alt="Pilot" />';
+        }
+      }
+    }
+
+    function replaceImages(root) {
+      if (!root) return;
+      if (root.tagName === "IMG") processImg(root);
+      if (root.querySelectorAll) {
+        const imgs = root.querySelectorAll("img");
+        for (let i = 0; i < imgs.length; i++) processImg(imgs[i]);
+      }
+    }
+
+    function processImg(img) {
+      const src = img.getAttribute("src") || "";
+      const srcset = img.getAttribute("srcset") || "";
+      if (src.includes("0t5FUf9Aoeu4OnhaOKzopHuhNA") || srcset.includes("0t5FUf9Aoeu4OnhaOKzopHuhNA")) {
+        img.src = "/images/candidate_focus_left.png";
+        img.srcset = "/images/candidate_focus_left.png";
+        img.removeAttribute("srcset");
+      } else if (src.includes("5yQyAXm2N95towarCba63NMaj6c") || srcset.includes("5yQyAXm2N95towarCba63NMaj6c")) {
+        img.src = "/images/candidate_focus_right.png";
+        img.srcset = "/images/candidate_focus_right.png";
+        img.removeAttribute("srcset");
+      }
+    }
+
+    const origSrcDesc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "src");
+    if (origSrcDesc && origSrcDesc.set) {
+      Object.defineProperty(HTMLImageElement.prototype, "src", {
+        set(val) {
+          if (typeof val === "string") {
+            if (val.includes("0t5FUf9Aoeu4OnhaOKzopHuhNA")) val = "/images/candidate_focus_left.png";
+            else if (val.includes("5yQyAXm2N95towarCba63NMaj6c")) val = "/images/candidate_focus_right.png";
+          }
+          origSrcDesc.set.call(this, val);
+        },
+        get() { return origSrcDesc.get.call(this); }
+      });
+    }
+
+    const origSrcsetDesc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "srcset");
+    if (origSrcsetDesc && origSrcsetDesc.set) {
+      Object.defineProperty(HTMLImageElement.prototype, "srcset", {
+        set(val) {
+          if (typeof val === "string") {
+            if (val.includes("0t5FUf9Aoeu4OnhaOKzopHuhNA")) val = "/images/candidate_focus_left.png";
+            else if (val.includes("5yQyAXm2N95towarCba63NMaj6c")) val = "/images/candidate_focus_right.png";
+          }
+          origSrcsetDesc.set.call(this, val);
+        },
+        get() { return origSrcsetDesc.get.call(this); }
+      });
+    }
+
+    const origSetAttr = Element.prototype.setAttribute;
+    Element.prototype.setAttribute = function(name, val) {
+      if (this.tagName === "IMG" && (name === "src" || name === "srcset") && typeof val === "string") {
+        if (val.includes("0t5FUf9Aoeu4OnhaOKzopHuhNA")) val = "/images/candidate_focus_left.png";
+        else if (val.includes("5yQyAXm2N95towarCba63NMaj6c")) val = "/images/candidate_focus_right.png";
+      }
+      return origSetAttr.call(this, name, val);
+    };
+
+    function replaceNodeText(node) {
+      if (!node) return;
+      if (node.nodeType === Node.TEXT_NODE) {
+        const orig = node.nodeValue;
+        if (!orig || !orig.trim()) return;
+        const transformed = transform(orig);
+        if (transformed !== orig) {
+          node.nodeValue = transformed;
         }
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         if (node.tagName === "SCRIPT" || node.tagName === "STYLE") return;
         for (let child of node.childNodes) {
-          replaceText(child);
+          replaceNodeText(child);
         }
       }
     }
@@ -72,12 +281,7 @@
     if (origDataDesc && origDataDesc.set) {
       Object.defineProperty(CharacterData.prototype, "data", {
         set(val) {
-          if (typeof val === "string") {
-            for (let [rx, rep] of rules) {
-              if (rx.test(val)) val = val.replace(rx, rep);
-            }
-          }
-          origDataDesc.set.call(this, val);
+          origDataDesc.set.call(this, transform(val));
         },
         get() {
           return origDataDesc.get.call(this);
@@ -90,12 +294,7 @@
     if (origTextDesc && origTextDesc.set) {
       Object.defineProperty(Node.prototype, "textContent", {
         set(val) {
-          if (typeof val === "string") {
-            for (let [rx, rep] of rules) {
-              if (rx.test(val)) val = val.replace(rx, rep);
-            }
-          }
-          origTextDesc.set.call(this, val);
+          origTextDesc.set.call(this, transform(val));
         },
         get() {
           return origTextDesc.get.call(this);
@@ -103,47 +302,147 @@
       });
     }
 
+    // Intercept nodeValue
+    const origValDesc = Object.getOwnPropertyDescriptor(Node.prototype, "nodeValue");
+    if (origValDesc && origValDesc.set) {
+      Object.defineProperty(Node.prototype, "nodeValue", {
+        set(val) {
+          origValDesc.set.call(this, transform(val));
+        },
+        get() {
+          return origValDesc.get.call(this);
+        }
+      });
+    }
+
+    // Intercept createTextNode
+    const origCreateText = document.createTextNode;
+    document.createTextNode = function(text) {
+      return origCreateText.call(document, transform(text));
+    };
+
+    function sanitizeLinks() {
+      if (!document.body) return;
+      const anchors = document.querySelectorAll('a');
+      for (let i = 0; i < anchors.length; i++) {
+        const a = anchors[i];
+        const href = a.getAttribute('href') || '';
+        if (
+          href.includes('contra.com') ||
+          href.includes('slack.com') ||
+          href.includes('contralabs.com') ||
+          a.closest('.framer-o79b4e') ||
+          a.closest('[data-framer-name="Tags"]')
+        ) {
+          a.setAttribute('href', '#pipeline');
+          a.removeAttribute('target');
+          a.setAttribute('rel', 'noopener noreferrer');
+        }
+      }
+    }
+
+    // Intercept clicks at capture phase so external navigation to Contra/Slack is 100% blocked
+    document.addEventListener('click', function(e) {
+      const anchor = e.target.closest('a');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href') || '';
+      if (
+        href.includes('contra.com') ||
+        href.includes('slack.com') ||
+        href.includes('contralabs.com') ||
+        anchor.closest('.framer-o79b4e') ||
+        anchor.closest('[data-framer-name="Tags"]')
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        const target = document.getElementById('pipeline') || document.getElementById('stats');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+        return false;
+      }
+    }, true);
+
+    function fitFeedbackText() {
+      const rows = document.querySelectorAll(".framer-eud1az [data-framer-name^='Row']");
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const svg = row.querySelector("svg");
+        const p = row.querySelector(".framer-fit-text p");
+        const fo = row.querySelector("foreignObject");
+        if (!svg || !p || !fo) continue;
+        svg.style.overflow = "visible";
+        const scrollW = p.scrollWidth;
+        const clientW = p.clientWidth;
+        if (scrollW > clientW) {
+          const ratio = Math.min(1, (clientW / scrollW) * 0.98);
+          fo.setAttribute("transform", "scale(" + ratio + ")");
+          fo.style.transformOrigin = "center center";
+        }
+      }
+    }
+
     // Continuous MutationObserver
     const observer = new MutationObserver((mutations) => {
       for (let m of mutations) {
         if (m.type === "characterData") {
-          replaceText(m.target);
+          replaceNodeText(m.target);
         } else if (m.type === "childList") {
-          for (let n of m.addedNodes) {
-            replaceText(n);
+          for (let node of m.addedNodes) {
+            replaceNodeText(node); replaceImages(node); fixFooter();
           }
+          sanitizeLinks();
+          fitFeedbackText();
         }
       }
     });
 
-    if (document.documentElement) {
-      observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-      replaceText(document.documentElement);
-    } else {
-      document.addEventListener("DOMContentLoaded", () => {
-        observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-        replaceText(document.documentElement);
-      });
-    }
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
 
-    window.addEventListener("load", () => {
-      replaceText(document.body);
-      // Auto-hide preloader after 1.8s if still stuck
-      setTimeout(() => {
-        const pre = document.querySelector(".framer-1h85lr5-container, [data-framer-name=\"Pre_Loader\"]");
-        if (pre) {
-          pre.style.transition = "opacity 0.5s ease";
-          pre.style.opacity = "0";
-          setTimeout(() => { pre.style.display = "none"; }, 500);
-        }
-        document.querySelectorAll("[data-framer-appear-id]").forEach(el => {
-          el.style.opacity = "1";
-          el.style.transform = "none";
-        });
-      }, 1500);
+    // Sweeper every 50ms for first 5 seconds, then every 300ms
+    let sweeps = 0;
+    const sweeper = setInterval(() => {
+      sweeps++;
+      if (document.body) {
+        replaceNodeText(document.body); replaceImages(document.body); fixFooter();
+        sanitizeLinks();
+        fitFeedbackText();
+      }
+      if (sweeps > 100) {
+        clearInterval(sweeper);
+        setInterval(() => {
+          if (document.body) {
+            replaceNodeText(document.body); replaceImages(document.body); fixFooter();
+            sanitizeLinks();
+            fitFeedbackText();
+          }
+        }, 400);
+      }
+    }, 50);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      replaceNodeText(document.body); replaceImages(document.body); fixFooter();
+      sanitizeLinks();
+      fitFeedbackText();
     });
   })();
   </script>
+  <style>
+    .framer-eud1az svg,
+    .framer-eud1az foreignObject {
+      overflow: visible !important;
+    }
+    .framer-4lH9J .framer-g77i04 {
+      width: 82% !important;
+    }
+    .framer-4lH9J .framer-12i6tzi {
+      width: 85% !important;
+    }
+  </style>
 
   <base href="/">
   <meta charset="utf-8">
@@ -10760,28 +11059,55 @@
 
 
   <style id="pilot-visibility-engine">
-    /* Reveal all elements smoothly, prevent stuck opacity 0.001 */
-    [data-framer-appear-id],
-    .framer-dvfktk,
-    .framer-162fkh0,
-    .framer-u6qfc0,
-    .framer-tlisl9,
-    .framer-3rqm0w-container,
-    .framer-120zae6-container,
-    .framer-ooszmu-container,
-    .framer-1tgw92n-container,
-    .framer-2n5sfa-container {
-      opacity: 1 !important;
-      transform: none !important;
-    }
-
-    /* Dismiss preloader after initial load */
+    /* Hero Background Video Engine (Pre_Loader container) */
     .framer-1h85lr5-container, [data-framer-name="Pre_Loader"] {
-      display: none !important;
+      pointer-events: none !important;
     }
 
-    /* Top Nav Logo override to PILOT */
-    .framer-bb3cF, .framer-NLAj7, .framer-RuYMa {
+    /* Master Rolling Link Animation for Navbar */
+    .framer-kHlZU {
+      height: 20px !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      align-items: center !important;
+      gap: 2px !important;
+      text-decoration: none !important;
+      cursor: pointer !important;
+      position: relative !important;
+    }
+
+    .framer-kHlZU .framer-1feexxy,
+    .framer-kHlZU .framer-1no6suo {
+      height: 20px !important;
+      line-height: 20px !important;
+      white-space: pre !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      width: auto !important;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease !important;
+      transform: translate3d(0, 0, 0) !important;
+      opacity: 1 !important;
+    }
+
+    .framer-kHlZU .framer-1no6suo {
+      opacity: 0.7 !important;
+    }
+
+    .framer-kHlZU:hover .framer-1feexxy,
+    .framer-kHlZU:hover .framer-1no6suo,
+    .framer-kHlZU.hover .framer-1feexxy,
+    .framer-kHlZU.hover .framer-1no6suo {
+      transform: translate3d(0, -22px, 0) !important;
+    }
+
+    /* Top Nav Logo override to PILOT (strictly scoped to top nav container) */
+    .framer-od7c68-container .framer-bb3cF,
+    .framer-od7c68-container .framer-NLAj7,
+    .framer-od7c68-container .framer-RuYMa {
       background: none !important;
       -webkit-mask: none !important;
       mask: none !important;
@@ -10793,17 +11119,73 @@
       font-size: 15px !important;
       color: #2b2b29 !important;
     }
-    .framer-bb3cF::after, .framer-NLAj7::after {
+    .framer-od7c68-container .framer-bb3cF::after,
+    .framer-od7c68-container .framer-NLAj7::after {
       content: "PILOT" !important;
       font-weight: 800 !important;
       letter-spacing: 0.12em !important;
       color: #2b2b29 !important;
     }
-    .framer-RuYMa::after {
+    .framer-od7c68-container .framer-RuYMa::after {
       content: "v0.1" !important;
       font-size: 10px !important;
       color: #387478 !important;
       margin-left: 4px !important;
+    }
+
+    
+    /* Footer Logo override: Replace 'contra LABS' with official PILOT wordmark */
+    .framer-1bb541w-container .framer-zGvwE,
+    .framer-zubHS .framer-zGvwE,
+    .framer-zGvwE {
+      background: none !important;
+      -webkit-mask: none !important;
+      mask: none !important;
+      display: flex !important;
+      align-items: center !important;
+      height: 44px !important;
+      width: 140px !important;
+      position: relative !important;
+      cursor: pointer !important;
+    }
+    .framer-1bb541w-container .framer-zGvwE img.pilot-footer-logo,
+    .framer-zubHS .framer-zGvwE img.pilot-footer-logo {
+      height: 38px !important;
+      width: auto !important;
+      filter: brightness(0) !important;
+      opacity: 0.9 !important;
+      display: block !important;
+      transition: opacity 0.2s ease !important;
+    }
+    .framer-zubHS:hover .pilot-footer-logo {
+      opacity: 0.65 !important;
+    }
+
+    /* Preloader: Replace 'CONTRA' and 'LABS' with 'PILOT' on both sides */
+    .framer-46DDF .framer-115rbw1,
+    .framer-46DDF .framer-zd0u89 {
+      -webkit-mask: none !important;
+      mask: none !important;
+      background: none !important;
+      display: flex !important;
+      align-items: center !important;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.12em !important;
+      font-size: clamp(20px, 2.5vw, 28px) !important;
+      line-height: 46px !important;
+      color: var(--token-7bf9a068-abd4-4063-bdf0-52c70cd939e4, rgb(73, 68, 68)) !important;
+    }
+    .framer-46DDF .framer-115rbw1 {
+      justify-content: flex-end !important;
+    }
+    .framer-46DDF .framer-zd0u89 {
+      justify-content: flex-start !important;
+    }
+    .framer-46DDF .framer-115rbw1::after,
+    .framer-46DDF .framer-zd0u89::after {
+      content: "PILOT" !important;
+      display: inline-block !important;
     }
   </style>
 
@@ -11132,8 +11514,8 @@
                 <div class="framer-1puzn7a" data-framer-name="slider"
                   style="will-change:transform;opacity:1;transform:none">
                   <div class="ssr-variant hidden-vm8aph hidden-1pqjven">
-                    <div class="framer-123gwzw-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-123gwzw-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-sayhs8"
                         data-framer-name="Desktop XL"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -11249,8 +11631,8 @@
                     </div>
                   </div>
                   <div class="ssr-variant hidden-1523gqx hidden-1pqjven">
-                    <div class="framer-123gwzw-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-123gwzw-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-1u6c4xc"
                         data-framer-name="Mobile"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -11366,8 +11748,8 @@
                     </div>
                   </div>
                   <div class="ssr-variant hidden-1523gqx hidden-vm8aph">
-                    <div class="framer-123gwzw-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-123gwzw-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-1v3wliz"
                         data-framer-name="Desktop"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -11831,8 +12213,8 @@
                     </div>
                   </div><!--$-->
                   <div class="ssr-variant hidden-vm8aph hidden-1pqjven">
-                    <div class="framer-k04i1i-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-k04i1i-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-sayhs8"
                         data-framer-name="Desktop XL"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -11935,8 +12317,8 @@
                     </div>
                   </div>
                   <div class="ssr-variant hidden-1523gqx hidden-1pqjven">
-                    <div class="framer-k04i1i-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-k04i1i-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-1u6c4xc"
                         data-framer-name="Mobile"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -12039,8 +12421,8 @@
                     </div>
                   </div>
                   <div class="ssr-variant hidden-1523gqx hidden-vm8aph">
-                    <div class="framer-k04i1i-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-k04i1i-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-1v3wliz"
                         data-framer-name="Desktop"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -12143,8 +12525,8 @@
                     </div>
                   </div><!--/$-->
                   <div class="ssr-variant hidden-vm8aph hidden-1pqjven">
-                    <div class="framer-nojj4-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-nojj4-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-sayhs8"
                         data-framer-name="Desktop XL"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -12258,8 +12640,8 @@
                     </div>
                   </div>
                   <div class="ssr-variant hidden-1523gqx hidden-1pqjven">
-                    <div class="framer-nojj4-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-nojj4-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-1u6c4xc"
                         data-framer-name="Mobile"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -12375,8 +12757,8 @@
                     </div>
                   </div>
                   <div class="ssr-variant hidden-1523gqx hidden-vm8aph">
-                    <div class="framer-nojj4-container" data-framer-name="Creative Arena" name="Creative Arena">
-                      <div name="Creative Arena"
+                    <div class="framer-nojj4-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                      <div name="Interactive Flashcards"
                         class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-1v3wliz"
                         data-framer-name="Desktop"
                         style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -12494,8 +12876,8 @@
               <div class="ssr-variant hidden-1523gqx hidden-vm8aph hidden-1pqjven">
                 <div class="framer-1puzn7a" data-framer-name="slider"
                   style="will-change:transform;opacity:1;transform:none">
-                  <div class="framer-123gwzw-container" data-framer-name="Creative Arena" name="Creative Arena">
-                    <div name="Creative Arena"
+                  <div class="framer-123gwzw-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                    <div name="Interactive Flashcards"
                       class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-sayhs8"
                       data-framer-name="Desktop XL"
                       style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -12718,8 +13100,8 @@
                       </div>
                     </div>
                   </div><!--$-->
-                  <div class="framer-k04i1i-container" data-framer-name="Creative Arena" name="Creative Arena">
-                    <div name="Creative Arena"
+                  <div class="framer-k04i1i-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                    <div name="Interactive Flashcards"
                       class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-sayhs8"
                       data-framer-name="Desktop XL"
                       style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -12821,8 +13203,8 @@
                       </div>
                     </div>
                   </div><!--/$-->
-                  <div class="framer-nojj4-container" data-framer-name="Creative Arena" name="Creative Arena">
-                    <div name="Creative Arena"
+                  <div class="framer-nojj4-container" data-framer-name="Interactive Flashcards" name="Interactive Flashcards">
+                    <div name="Interactive Flashcards"
                       class="framer-Ps7zc framer-qjk15 framer-gLsaq framer-wiR3m framer-qa7Hq framer-sayhs8 framer-v-sayhs8"
                       data-framer-name="Desktop XL"
                       style="background-color:var(--token-97a39cd4-7a89-477d-8e83-6eb15404c07f, rgb(165, 190, 186));height:100%;width:100%;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px">
@@ -13216,7 +13598,7 @@
               <div class="framer-1fiptq9" data-framer-name="Trig 3" id="expert-trig-3"></div>
             </div>
           </div>
-          <div class="framer-88l0uk" data-framer-name="The Network of Human Taste" id="the-network-of-human-taste">
+          <div class="framer-88l0uk" data-framer-name="The Engine of Deterministic Prep" id="the-network-of-human-taste">
             <div class="framer-1hpek1j" data-framer-name="Headers">
               <div class="framer-1l3v0z" data-framer-name="Headers">
                 <div class="framer-1byejy1" data-framer-name="Header Line 1">
@@ -13272,7 +13654,7 @@
                           style="overflow:visible;transform-origin:center center">
                           <p dir="auto"
                             style="--font-selector:R0Y7U291cmNlIFNlcmlmIDQtdmFyaWFibGUtcmVndWxhclZGPUluZG5hSFFpSURRd01Dd2dJbTl3YzNvaUlEWXc=;--framer-font-family:&quot;Source Serif 4 Variable&quot;, &quot;Source Serif 4 Variable Placeholder&quot;, serif;--framer-font-size:328.93612811635825px;--framer-font-variation-axes:&quot;wght&quot; 400, &quot;opsz&quot; 60;--framer-letter-spacing:-0.04em;--framer-line-height:100%;--framer-text-alignment:center;--framer-text-color:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))"
-                            class="framer-text">of Human</p>
+                            class="framer-text">of Verified</p>
                         </foreignObject>
                       </svg></div>
                     <div class="ssr-variant hidden-1523gqx hidden-1pqjven hidden-tg3joy">
@@ -13280,7 +13662,7 @@
                         style="will-change:transform;opacity:1;transform:translateY(120px)">
                         <p dir="auto"
                           style="--font-selector:R0Y7U291cmNlIFNlcmlmIDQtdmFyaWFibGUtcmVndWxhclZGPUluZG5hSFFpSURRd01Dd2dJbTl3YzNvaUlEWXc=;--framer-font-family:&quot;Source Serif 4 Variable&quot;, &quot;Source Serif 4 Variable Placeholder&quot;, serif;--framer-font-size:72px;--framer-font-variation-axes:&quot;wght&quot; 400, &quot;opsz&quot; 60;--framer-letter-spacing:-0.04em;--framer-line-height:90%;--framer-text-alignment:left;--framer-text-color:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))"
-                          class="framer-text">of Human</p>
+                          class="framer-text">of Verified</p>
                       </div>
                     </div>
                   </div>
@@ -13294,7 +13676,7 @@
                           style="overflow:visible;transform-origin:center center">
                           <p dir="auto"
                             style="--font-selector:R0Y7U291cmNlIFNlcmlmIDQtdmFyaWFibGUtcmVndWxhclZGPUluZG5hSFFpSURRd01Dd2dJbTl3YzNvaUlEWXc=;--framer-font-family:&quot;Source Serif 4 Variable&quot;, &quot;Source Serif 4 Variable Placeholder&quot;, serif;--framer-font-size:316.3385925387702px;--framer-font-variation-axes:&quot;wght&quot; 400, &quot;opsz&quot; 60;--framer-letter-spacing:-0.04em;--framer-line-height:100%;--framer-text-alignment:center;--framer-text-color:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))"
-                            class="framer-text">Taste</p>
+                            class="framer-text">Readiness</p>
                         </foreignObject>
                       </svg></div>
                     <div class="ssr-variant hidden-1523gqx hidden-1pqjven hidden-tg3joy">
@@ -13302,7 +13684,7 @@
                         style="will-change:transform;opacity:1;transform:translateY(120px)">
                         <p dir="auto"
                           style="--font-selector:R0Y7U291cmNlIFNlcmlmIDQtdmFyaWFibGUtcmVndWxhclZGPUluZG5hSFFpSURRd01Dd2dJbTl3YzNvaUlEWXc=;--framer-font-family:&quot;Source Serif 4 Variable&quot;, &quot;Source Serif 4 Variable Placeholder&quot;, serif;--framer-font-size:72px;--framer-font-variation-axes:&quot;wght&quot; 400, &quot;opsz&quot; 60;--framer-letter-spacing:-0.04em;--framer-line-height:90%;--framer-text-alignment:left;--framer-text-color:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))"
-                          class="framer-text">Taste</p>
+                          class="framer-text">Readiness</p>
                       </div>
                     </div>
                   </div>
@@ -13396,8 +13778,8 @@
                         <div class="framer-6zz3fu-container"><!--$--><a
                             class="framer-rZ5Gy framer-142xoun framer-v-142xoun framer-nudtmy" data-border="true"
                             data-framer-name="Base"
-                            href="https://contra-work.slack.com/archives/C08L5HVCQBW/p1787020895911719?thread_ts=1786903575.840139&amp;cid=C08L5HVCQBW"
-                            target="_blank"
+                            href="#pipeline"
+                            rel="noopener noreferrer"
                             style="--border-bottom-width:1px;--border-color:rgba(200, 188, 174, 0.5);--border-left-width:1px;--border-right-width:1px;--border-style:solid;--border-top-width:1px;background-color:rgba(255, 255, 255, 0);border-bottom-left-radius:99px;border-bottom-right-radius:99px;border-top-left-radius:99px;border-top-right-radius:99px">
                             <div class="framer-7gub1h" data-framer-name="Next"
                               data-framer-component-type="RichTextContainer"
@@ -13567,8 +13949,8 @@
                         <div class="framer-6zz3fu-container"><!--$--><a
                             class="framer-rZ5Gy framer-142xoun framer-v-142xoun framer-nudtmy" data-border="true"
                             data-framer-name="Base"
-                            href="https://contra-work.slack.com/archives/C08L5HVCQBW/p1787020895911719?thread_ts=1786903575.840139&amp;cid=C08L5HVCQBW"
-                            target="_blank"
+                            href="#pipeline"
+                            rel="noopener noreferrer"
                             style="--border-bottom-width:1px;--border-color:rgba(200, 188, 174, 0.5);--border-left-width:1px;--border-right-width:1px;--border-style:solid;--border-top-width:1px;background-color:rgba(255, 255, 255, 0);border-bottom-left-radius:99px;border-bottom-right-radius:99px;border-top-left-radius:99px;border-top-right-radius:99px">
                             <div class="framer-7gub1h" data-framer-name="Next"
                               data-framer-component-type="RichTextContainer"
@@ -13740,8 +14122,8 @@
                       <div class="framer-6zz3fu-container"><!--$--><a
                           class="framer-rZ5Gy framer-142xoun framer-v-142xoun framer-nudtmy" data-border="true"
                           data-framer-name="Base"
-                          href="https://contra-work.slack.com/archives/C08L5HVCQBW/p1787020895911719?thread_ts=1786903575.840139&amp;cid=C08L5HVCQBW"
-                          target="_blank"
+                          href="#pipeline"
+                          rel="noopener noreferrer"
                           style="--border-bottom-width:1px;--border-color:rgba(200, 188, 174, 0.5);--border-left-width:1px;--border-right-width:1px;--border-style:solid;--border-top-width:1px;background-color:rgba(255, 255, 255, 0);border-bottom-left-radius:99px;border-bottom-right-radius:99px;border-top-left-radius:99px;border-top-right-radius:99px">
                           <div class="framer-7gub1h" data-framer-name="Next"
                             data-framer-component-type="RichTextContainer"
@@ -13903,8 +14285,8 @@
                       <div class="framer-6zz3fu-container"><!--$--><a
                           class="framer-rZ5Gy framer-142xoun framer-v-142xoun framer-nudtmy" data-border="true"
                           data-framer-name="Base"
-                          href="https://contra-work.slack.com/archives/C08L5HVCQBW/p1787020895911719?thread_ts=1786903575.840139&amp;cid=C08L5HVCQBW"
-                          target="_blank"
+                          href="#pipeline"
+                          rel="noopener noreferrer"
                           style="--border-bottom-width:1px;--border-color:rgba(200, 188, 174, 0.5);--border-left-width:1px;--border-right-width:1px;--border-style:solid;--border-top-width:1px;background-color:rgba(255, 255, 255, 0);border-bottom-left-radius:99px;border-bottom-right-radius:99px;border-top-left-radius:99px;border-top-right-radius:99px">
                           <div class="framer-7gub1h" data-framer-name="Next"
                             data-framer-component-type="RichTextContainer"
@@ -14028,7 +14410,7 @@
                     style="overflow:visible;transform-origin:center center">
                     <p dir="auto"
                       style="--font-selector:R0Y7U291cmNlIFNlcmlmIDQtdmFyaWFibGUtcmVndWxhclZGPUluZG5hSFFpSURRd01Dd2dJbTl3YzNvaUlEWXc=;--framer-font-family:&quot;Source Serif 4 Variable&quot;, &quot;Source Serif 4 Variable Placeholder&quot;, serif;--framer-font-size:268px;--framer-font-variation-axes:&quot;wght&quot; 400, &quot;opsz&quot; 60;--framer-letter-spacing:-0.05em;--framer-line-height:90%;--framer-text-alignment:center;--framer-text-color:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))"
-                      class="framer-text">Feedback</p>
+                      class="framer-text">Software</p>
                   </foreignObject>
                 </svg></div>
               <div class="framer-1q5bb6l">
@@ -14189,7 +14571,7 @@
                     style="overflow:visible;transform-origin:center center">
                     <p dir="auto"
                       style="--font-selector:R0Y7U291cmNlIFNlcmlmIDQtdmFyaWFibGUtcmVndWxhclZGPUluZG5hSFFpSURRd01Dd2dJbTl3YzNvaUlEWXc=;--framer-font-family:&quot;Source Serif 4 Variable&quot;, &quot;Source Serif 4 Variable Placeholder&quot;, serif;--framer-font-size:228.85148338219872px;--framer-font-variation-axes:&quot;wght&quot; 400, &quot;opsz&quot; 60;--framer-letter-spacing:-0.05em;--framer-line-height:90%;--framer-text-alignment:center;--framer-text-color:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))"
-                      class="framer-text">feels</p>
+                      class="framer-text">verifies</p>
                   </foreignObject>
                 </svg></div>
               <div class="framer-8urn37">
@@ -14240,7 +14622,7 @@
                     style="overflow:visible;transform-origin:center center">
                     <p dir="auto"
                       style="--font-selector:R0Y7U291cmNlIFNlcmlmIDQtdmFyaWFibGUtcmVndWxhclZGPUluZG5hSFFpSURRd01Dd2dJbTl3YzNvaUlEWXc=;--framer-font-family:&quot;Source Serif 4 Variable&quot;, &quot;Source Serif 4 Variable Placeholder&quot;, serif;--framer-font-size:135.25156553254797px;--framer-font-variation-axes:&quot;wght&quot; 400, &quot;opsz&quot; 60;--framer-letter-spacing:-0.05em;--framer-line-height:90%;--framer-text-alignment:center;--framer-text-color:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))"
-                      class="framer-text">verified</p>
+                      class="framer-text">readiness</p>
                   </foreignObject>
                 </svg></div>
               <div class="framer-1uotjx8">
@@ -15380,7 +15762,7 @@
                             <h2 class="framer-text framer-styles-preset-1i8rmnp" data-styles-preset="mWi2rMF9k"
                               dir="auto"
                               style="--framer-text-alignment:center;--framer-text-color:var(--extracted-1of0zx5, var(--token-bc95b61a-a7e2-421b-af5d-ae02de34d353, rgb(251, 250, 246)))">
-                              Explicit requirement tracking ensures zero blind spots</h2>
+                              Deep preparation shapes authentic interview mastery</h2>
                           </div>
                         </div>
                         <div class="framer-cickxj" data-framer-name="Subheader + CTA"
@@ -15427,8 +15809,8 @@
                                 data-framer-background-image-wrapper="true"><img decoding="async" width="944"
                                   height="944"
                                   sizes="(min-width: 1600px) max((100vw * 1.12 - 160px) / 5, 1px), (min-width: 1200px) and (max-width: 1599.98px) max((100vw * 1.12 - 160px) / 5, 1px), (max-width: 809.98px) max((100vw * 2.72 - 72px) / 5, 1px), (min-width: 810px) and (max-width: 1199.98px) max((100vw * 1.12 - 160px) / 5, 1px)"
-                                  srcset="https://framerusercontent.com/images/0t5FUf9Aoeu4OnhaOKzopHuhNA.png?scale-down-to=512&amp;width=944&amp;height=944 512w,https://framerusercontent.com/images/0t5FUf9Aoeu4OnhaOKzopHuhNA.png?width=944&amp;height=944 944w"
-                                  src="https://framerusercontent.com/images/0t5FUf9Aoeu4OnhaOKzopHuhNA.png?width=944&amp;height=944"
+                                  srcset="/images/candidate_focus_left.png"
+                                  src="/images/candidate_focus_left.png"
                                   alt
                                   style="display:block;width:100%;height:100%;border-radius:inherit;corner-shape:inherit;object-position:center;object-fit:fill">
                               </div>
@@ -15458,8 +15840,8 @@
                                 data-framer-background-image-wrapper="true"><img decoding="async" width="1512"
                                   height="1512"
                                   sizes="(min-width: 1600px) max((100vw * 1.12 - 160px) / 5, 1px), (min-width: 1200px) and (max-width: 1599.98px) max((100vw * 1.12 - 160px) / 5, 1px), (max-width: 809.98px) max((100vw * 2.72 - 72px) / 5, 1px), (min-width: 810px) and (max-width: 1199.98px) max((100vw * 1.12 - 160px) / 5, 1px)"
-                                  srcset="https://framerusercontent.com/images/5yQyAXm2N95towarCba63NMaj6c.png?scale-down-to=512&amp;width=1512&amp;height=1512 512w,https://framerusercontent.com/images/5yQyAXm2N95towarCba63NMaj6c.png?scale-down-to=1024&amp;width=1512&amp;height=1512 1024w,https://framerusercontent.com/images/5yQyAXm2N95towarCba63NMaj6c.png?width=1512&amp;height=1512 1512w"
-                                  src="https://framerusercontent.com/images/5yQyAXm2N95towarCba63NMaj6c.png?width=1512&amp;height=1512"
+                                  srcset="/images/candidate_focus_right.png"
+                                  src="/images/candidate_focus_right.png"
                                   alt
                                   style="display:block;width:100%;height:100%;border-radius:inherit;corner-shape:inherit;object-position:center;object-fit:fill">
                               </div>
@@ -15505,7 +15887,7 @@
                                     style="--extracted-r6o4lv:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41));--framer-paragraph-spacing:0px;transform:translate(-50%, -50%)">
                                     <p dir="auto" class="framer-text"
                                       style="--font-selector:Q1VTVE9NVjI7R1QgU3RhbmRhcmQgNiBMIE1lZGl1bQ==;--framer-font-family:&quot;GT Standard 6 L Medium&quot;, &quot;GT Standard 6 L Medium Placeholder&quot;, sans-serif;--framer-font-size:14px;--framer-font-weight:500;--framer-letter-spacing:-0.01em;--framer-line-height:20px;--framer-text-alignment:center;--framer-text-color:var(--extracted-r6o4lv, var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41)))">
-                                      Hard (Score 2)</p>
+                                      ← Deep Architecture</p>
                                   </div>
                                 </div>
                                 <div class="framer-1dg1ivf" data-framer-name="Right">
@@ -15540,7 +15922,7 @@
                                     style="--extracted-r6o4lv:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41));--framer-paragraph-spacing:0px;transform:translate(-50%, -50%)">
                                     <p dir="auto" class="framer-text"
                                       style="--font-selector:Q1VTVE9NVjI7R1QgU3RhbmRhcmQgNiBMIE1lZGl1bQ==;--framer-font-family:&quot;GT Standard 6 L Medium&quot;, &quot;GT Standard 6 L Medium Placeholder&quot;, sans-serif;--framer-font-size:14px;--framer-font-weight:500;--framer-letter-spacing:-0.01em;--framer-line-height:20px;--framer-text-alignment:center;--framer-text-color:var(--extracted-r6o4lv, var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41)))">
-                                      Easy (Score 5)</p>
+                                      Fast Execution →</p>
                                   </div>
                                 </div>
                                 <div class="framer-1dg1ivf" data-framer-name="Right">
@@ -15562,7 +15944,7 @@
                               style="--extracted-r6o4lv:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41));--framer-paragraph-spacing:0px;opacity:0;transform:none">
                               <p dir="auto" class="framer-text"
                                 style="--font-selector:Q1VTVE9NVjI7R1QgU3RhbmRhcmQgTCBSZWd1bGFy;--framer-font-family:&quot;GT Standard L Regular&quot;, &quot;GT Standard L Regular Placeholder&quot;, sans-serif;--framer-font-size:15px;--framer-letter-spacing:-0.01em;--framer-line-height:24px;--framer-text-color:var(--extracted-r6o4lv, var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41)))">
-                                Interview Question [R3: System Design]: "Design a distributed rate limiter that handles 100k requests/sec across 5 global regions with sub-5ms latency and graceful Redis failover."
+                                Interview Simulation [R3: System Design]: Candidate evaluates distributed failover, concurrency bottlenecks, and requirement traceability under pressure.
                               </p>
                             </div>
                           </div>
@@ -15657,7 +16039,7 @@
                             <h2 class="framer-text framer-styles-preset-1i8rmnp" data-styles-preset="mWi2rMF9k"
                               dir="auto"
                               style="--framer-text-alignment:center;--framer-text-color:var(--extracted-1of0zx5, var(--token-bc95b61a-a7e2-421b-af5d-ae02de34d353, rgb(251, 250, 246)))">
-                              Explicit requirement tracking ensures zero blind spots</h2>
+                              Deep preparation shapes authentic interview mastery</h2>
                           </div>
                         </div>
                         <div class="framer-cickxj" data-framer-name="Subheader + CTA"
@@ -15704,8 +16086,8 @@
                                 data-framer-background-image-wrapper="true"><img decoding="async" width="944"
                                   height="944"
                                   sizes="(min-width: 1600px) max((100vw * 1.12 - 160px) / 5, 1px), (min-width: 1200px) and (max-width: 1599.98px) max((100vw * 1.12 - 160px) / 5, 1px), (max-width: 809.98px) max((100vw * 2.72 - 72px) / 5, 1px), (min-width: 810px) and (max-width: 1199.98px) max((100vw * 1.12 - 160px) / 5, 1px)"
-                                  srcset="https://framerusercontent.com/images/0t5FUf9Aoeu4OnhaOKzopHuhNA.png?scale-down-to=512&amp;width=944&amp;height=944 512w,https://framerusercontent.com/images/0t5FUf9Aoeu4OnhaOKzopHuhNA.png?width=944&amp;height=944 944w"
-                                  src="https://framerusercontent.com/images/0t5FUf9Aoeu4OnhaOKzopHuhNA.png?width=944&amp;height=944"
+                                  srcset="/images/candidate_focus_left.png"
+                                  src="/images/candidate_focus_left.png"
                                   alt
                                   style="display:block;width:100%;height:100%;border-radius:inherit;corner-shape:inherit;object-position:center;object-fit:fill">
                               </div>
@@ -15735,8 +16117,8 @@
                                 data-framer-background-image-wrapper="true"><img decoding="async" width="1512"
                                   height="1512"
                                   sizes="(min-width: 1600px) max((100vw * 1.12 - 160px) / 5, 1px), (min-width: 1200px) and (max-width: 1599.98px) max((100vw * 1.12 - 160px) / 5, 1px), (max-width: 809.98px) max((100vw * 2.72 - 72px) / 5, 1px), (min-width: 810px) and (max-width: 1199.98px) max((100vw * 1.12 - 160px) / 5, 1px)"
-                                  srcset="https://framerusercontent.com/images/5yQyAXm2N95towarCba63NMaj6c.png?scale-down-to=512&amp;width=1512&amp;height=1512 512w,https://framerusercontent.com/images/5yQyAXm2N95towarCba63NMaj6c.png?scale-down-to=1024&amp;width=1512&amp;height=1512 1024w,https://framerusercontent.com/images/5yQyAXm2N95towarCba63NMaj6c.png?width=1512&amp;height=1512 1512w"
-                                  src="https://framerusercontent.com/images/5yQyAXm2N95towarCba63NMaj6c.png?width=1512&amp;height=1512"
+                                  srcset="/images/candidate_focus_right.png"
+                                  src="/images/candidate_focus_right.png"
                                   alt
                                   style="display:block;width:100%;height:100%;border-radius:inherit;corner-shape:inherit;object-position:center;object-fit:fill">
                               </div>
@@ -15782,7 +16164,7 @@
                                     style="--extracted-r6o4lv:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41));--framer-paragraph-spacing:0px;transform:translate(-50%, -50%)">
                                     <p dir="auto" class="framer-text"
                                       style="--font-selector:Q1VTVE9NVjI7R1QgU3RhbmRhcmQgNiBMIE1lZGl1bQ==;--framer-font-family:&quot;GT Standard 6 L Medium&quot;, &quot;GT Standard 6 L Medium Placeholder&quot;, sans-serif;--framer-font-size:14px;--framer-font-weight:500;--framer-letter-spacing:-0.01em;--framer-line-height:20px;--framer-text-alignment:center;--framer-text-color:var(--extracted-r6o4lv, var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41)))">
-                                      Hard (Score 2)</p>
+                                      ← Deep Architecture</p>
                                   </div>
                                 </div>
                                 <div class="framer-1dg1ivf" data-framer-name="Right">
@@ -15817,7 +16199,7 @@
                                     style="--extracted-r6o4lv:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41));--framer-paragraph-spacing:0px;transform:translate(-50%, -50%)">
                                     <p dir="auto" class="framer-text"
                                       style="--font-selector:Q1VTVE9NVjI7R1QgU3RhbmRhcmQgNiBMIE1lZGl1bQ==;--framer-font-family:&quot;GT Standard 6 L Medium&quot;, &quot;GT Standard 6 L Medium Placeholder&quot;, sans-serif;--framer-font-size:14px;--framer-font-weight:500;--framer-letter-spacing:-0.01em;--framer-line-height:20px;--framer-text-alignment:center;--framer-text-color:var(--extracted-r6o4lv, var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41)))">
-                                      Easy (Score 5)</p>
+                                      Fast Execution →</p>
                                   </div>
                                 </div>
                                 <div class="framer-1dg1ivf" data-framer-name="Right">
@@ -15839,7 +16221,7 @@
                               style="--extracted-r6o4lv:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41));--framer-paragraph-spacing:0px;opacity:0;transform:none">
                               <p dir="auto" class="framer-text"
                                 style="--font-selector:Q1VTVE9NVjI7R1QgU3RhbmRhcmQgTCBSZWd1bGFy;--framer-font-family:&quot;GT Standard L Regular&quot;, &quot;GT Standard L Regular Placeholder&quot;, sans-serif;--framer-font-size:15px;--framer-letter-spacing:-0.01em;--framer-line-height:24px;--framer-text-color:var(--extracted-r6o4lv, var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41)))">
-                                Interview Question [R3: System Design]: "Design a distributed rate limiter that handles 100k requests/sec across 5 global regions with sub-5ms latency and graceful Redis failover."
+                                Interview Simulation [R3: System Design]: Candidate evaluates distributed failover, concurrency bottlenecks, and requirement traceability under pressure.
                               </p>
                             </div>
                           </div>
@@ -16417,9 +16799,7 @@
                 <div class="framer-e27h9z">
                   <div class="framer-1bb541w-container"><!--$--><a
                       class="framer-zubHS framer-4hq84l framer-v-4hq84l framer-11mwyg7" data-framer-name="Desktop XL">
-                      <div data-framer-name="Start" class="framer-zGvwE framer-1y9ct2h"
-                        style="--gm4ddv:var(--token-7bf9a068-abd4-4063-bdf0-52c70cd939e4, rgb(73, 68, 68));--7vsya8:rgb(74, 111, 120);--k9rho8:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))">
-                      </div>
+                      <div data-framer-name="Start" class="framer-zGvwE framer-1y9ct2h" style="mask:none!important;-webkit-mask:none!important;background:none!important;"><img class="pilot-footer-logo" src="/pilot-logo.png" style="height: 38px; width: auto; filter: brightness(0); opacity: 0.9; display: block;" alt="Pilot" /></div>
                     </a><!--/$--></div>
                   <div class="framer-11znuar" data-framer-name="Subheader">
                     <div class="framer-g4nnbe" data-framer-name="Top Line"
@@ -16652,9 +17032,7 @@
                 <div class="framer-e27h9z">
                   <div class="framer-1bb541w-container"><!--$--><a
                       class="framer-zubHS framer-4hq84l framer-v-1iz85rs framer-11mwyg7" data-framer-name="Tablet">
-                      <div data-framer-name="Start" class="framer-zGvwE framer-1y9ct2h"
-                        style="--gm4ddv:var(--token-7bf9a068-abd4-4063-bdf0-52c70cd939e4, rgb(73, 68, 68));--7vsya8:rgb(74, 111, 120);--k9rho8:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))">
-                      </div>
+                      <div data-framer-name="Start" class="framer-zGvwE framer-1y9ct2h" style="mask:none!important;-webkit-mask:none!important;background:none!important;"><img class="pilot-footer-logo" src="/pilot-logo.png" style="height: 38px; width: auto; filter: brightness(0); opacity: 0.9; display: block;" alt="Pilot" /></div>
                     </a><!--/$--></div>
                   <div class="framer-11znuar" data-framer-name="Subheader">
                     <div class="framer-g4nnbe" data-framer-name="Top Line"
@@ -16866,9 +17244,7 @@
                 <div class="framer-e27h9z">
                   <div class="framer-1bb541w-container"><!--$--><a
                       class="framer-zubHS framer-4hq84l framer-v-1ec37r0 framer-11mwyg7" data-framer-name="Phone">
-                      <div data-framer-name="Start" class="framer-zGvwE framer-1y9ct2h"
-                        style="--gm4ddv:var(--token-7bf9a068-abd4-4063-bdf0-52c70cd939e4, rgb(73, 68, 68));--7vsya8:rgb(74, 111, 120);--k9rho8:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))">
-                      </div>
+                      <div data-framer-name="Start" class="framer-zGvwE framer-1y9ct2h" style="mask:none!important;-webkit-mask:none!important;background:none!important;"><img class="pilot-footer-logo" src="/pilot-logo.png" style="height: 38px; width: auto; filter: brightness(0); opacity: 0.9; display: block;" alt="Pilot" /></div>
                     </a><!--/$--></div>
                   <div class="framer-11znuar" data-framer-name="Subheader">
                     <div class="framer-g4nnbe" data-framer-name="Top Line"
@@ -17100,9 +17476,7 @@
                 <div class="framer-e27h9z">
                   <div class="framer-1bb541w-container"><!--$--><a
                       class="framer-zubHS framer-4hq84l framer-v-3j2a71 framer-11mwyg7" data-framer-name="Desktop">
-                      <div data-framer-name="Start" class="framer-zGvwE framer-1y9ct2h"
-                        style="--gm4ddv:var(--token-7bf9a068-abd4-4063-bdf0-52c70cd939e4, rgb(73, 68, 68));--7vsya8:rgb(74, 111, 120);--k9rho8:var(--token-41862f85-d984-4269-90b9-0c207a5502ff, rgb(43, 43, 41))">
-                      </div>
+                      <div data-framer-name="Start" class="framer-zGvwE framer-1y9ct2h" style="mask:none!important;-webkit-mask:none!important;background:none!important;"><img class="pilot-footer-logo" src="/pilot-logo.png" style="height: 38px; width: auto; filter: brightness(0); opacity: 0.9; display: block;" alt="Pilot" /></div>
                     </a><!--/$--></div>
                   <div class="framer-11znuar" data-framer-name="Subheader">
                     <div class="framer-g4nnbe" data-framer-name="Top Line"
