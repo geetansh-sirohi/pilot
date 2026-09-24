@@ -11324,7 +11324,7 @@
       opacity: 0.65 !important;
     }
 
-    /* Preloader: Replace 'CONTRA' and 'LABS' with 'PILOT' on both sides */
+    /* Preloader: Left side = Pilot 'P' Icon Logo | Right side = Pilot Wordmark Name Logo */
     .framer-46DDF .framer-115rbw1,
     .framer-46DDF .framer-zd0u89 {
       -webkit-mask: none !important;
@@ -11332,12 +11332,7 @@
       background: none !important;
       display: flex !important;
       align-items: center !important;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-      font-weight: 800 !important;
-      letter-spacing: 0.12em !important;
-      font-size: clamp(20px, 2.5vw, 28px) !important;
       line-height: 46px !important;
-      color: var(--token-7bf9a068-abd4-4063-bdf0-52c70cd939e4, rgb(73, 68, 68)) !important;
     }
     .framer-46DDF .framer-115rbw1 {
       justify-content: flex-end !important;
@@ -11345,10 +11340,21 @@
     .framer-46DDF .framer-zd0u89 {
       justify-content: flex-start !important;
     }
-    .framer-46DDF .framer-115rbw1::after,
-    .framer-46DDF .framer-zd0u89::after {
-      content: "PILOT" !important;
+    .framer-46DDF .framer-115rbw1::after {
+      content: "" !important;
       display: inline-block !important;
+      width: clamp(38px, 4vw, 56px) !important;
+      height: clamp(24px, 2.5vw, 34px) !important;
+      background: url('/pilot-p-logo.png') no-repeat center right !important;
+      background-size: contain !important;
+    }
+    .framer-46DDF .framer-zd0u89::after {
+      content: "" !important;
+      display: inline-block !important;
+      width: clamp(80px, 8.5vw, 118px) !important;
+      height: clamp(24px, 2.5vw, 34px) !important;
+      background: url('/pilot-logo-dark.png') no-repeat center left !important;
+      background-size: contain !important;
     }
   </style>
 
