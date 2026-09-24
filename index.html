@@ -276,50 +276,7 @@
       }
     }
 
-    // Intercept character data modifications
-    const origDataDesc = Object.getOwnPropertyDescriptor(CharacterData.prototype, "data");
-    if (origDataDesc && origDataDesc.set) {
-      Object.defineProperty(CharacterData.prototype, "data", {
-        set(val) {
-          origDataDesc.set.call(this, transform(val));
-        },
-        get() {
-          return origDataDesc.get.call(this);
-        }
-      });
-    }
 
-    // Intercept textContent
-    const origTextDesc = Object.getOwnPropertyDescriptor(Node.prototype, "textContent");
-    if (origTextDesc && origTextDesc.set) {
-      Object.defineProperty(Node.prototype, "textContent", {
-        set(val) {
-          origTextDesc.set.call(this, transform(val));
-        },
-        get() {
-          return origTextDesc.get.call(this);
-        }
-      });
-    }
-
-    // Intercept nodeValue
-    const origValDesc = Object.getOwnPropertyDescriptor(Node.prototype, "nodeValue");
-    if (origValDesc && origValDesc.set) {
-      Object.defineProperty(Node.prototype, "nodeValue", {
-        set(val) {
-          origValDesc.set.call(this, transform(val));
-        },
-        get() {
-          return origValDesc.get.call(this);
-        }
-      });
-    }
-
-    // Intercept createTextNode
-    const origCreateText = document.createTextNode;
-    document.createTextNode = function(text) {
-      return origCreateText.call(document, transform(text));
-    };
 
     function fixNavLogo() {
       const navLinks = document.querySelectorAll('.framer-od7c68-container .framer-3rqm0w-container a');
@@ -490,43 +447,51 @@
       }
     }
 
-    // Continuous MutationObserver
-    const observer = new MutationObserver((mutations) => {
-      for (let m of mutations) {
-        if (m.type === "characterData") {
-          replaceNodeText(m.target);
-        } else if (m.type === "childList") {
-          for (let node of m.addedNodes) {
-            replaceNodeText(node); replaceImages(node); fixFooter(); fixNavLogo(); fixFooterLinks();
-          }
-          sanitizeLinks();
-          fitFeedbackText();
-          fitReadinessText();
+    let isMutating = false;
+    let pendingFrame = null;
+
+    function applyAllFixes() {
+      if (isMutating) return;
+      isMutating = true;
+      try {
+        if (document.body) {
+          replaceNodeText(document.body);
+          replaceImages(document.body);
         }
+        fixNavLogo();
+        fixFooter();
+        fixFooterLinks();
+        sanitizeLinks();
+        fitFeedbackText();
+        fitReadinessText();
+      } finally {
+        isMutating = false;
       }
+    }
+
+    function scheduleFixes() {
+      if (pendingFrame) return;
+      pendingFrame = requestAnimationFrame(() => {
+        pendingFrame = null;
+        applyAllFixes();
+      });
+    }
+
+    const observer = new MutationObserver(() => {
+      if (isMutating) return;
+      scheduleFixes();
     });
 
     observer.observe(document.documentElement, {
       childList: true,
-      subtree: true,
-      characterData: true
+      subtree: true
     });
 
-    setTimeout(() => {
-      if (document.body) {
-        replaceNodeText(document.body); replaceImages(document.body); fixFooter(); fixNavLogo(); fixFooterLinks();
-        sanitizeLinks();
-        fitFeedbackText();
-        fitReadinessText();
-      }
-    }, 1000);
-
-    document.addEventListener("DOMContentLoaded", () => {
-      replaceNodeText(document.body); replaceImages(document.body); fixFooter(); fixNavLogo(); fixFooterLinks();
-      sanitizeLinks();
-      fitFeedbackText();
-      fitReadinessText();
-    });
+    document.addEventListener("DOMContentLoaded", scheduleFixes);
+    window.addEventListener("load", scheduleFixes);
+    setTimeout(scheduleFixes, 300);
+    setTimeout(scheduleFixes, 1000);
+    setTimeout(scheduleFixes, 2500);
   })();
   </script>
   <style>
