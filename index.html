@@ -321,13 +321,87 @@
       return origCreateText.call(document, transform(text));
     };
 
+    function fixNavLogo() {
+      const navLinks = document.querySelectorAll('.framer-od7c68-container .framer-3rqm0w-container a');
+      for (let i = 0; i < navLinks.length; i++) {
+        const a = navLinks[i];
+        if (!a.querySelector('img.pilot-nav-p-logo')) {
+          a.style.setProperty('display', 'inline-flex', 'important');
+          a.style.setProperty('align-items', 'center', 'important');
+          a.style.setProperty('text-decoration', 'none', 'important');
+          a.innerHTML = '<img class="pilot-nav-p-logo" src="/pilot-p-logo.png" style="height: 32px; width: auto; display: block; object-fit: contain;" alt="Pilot" />';
+        }
+      }
+    }
+
+    function fixFooterLinks() {
+      const linkWrappers = document.querySelectorAll('.framer-b6ht15');
+      for (let i = 0; i < linkWrappers.length; i++) {
+        const wrap = linkWrappers[i];
+        const anchors = wrap.querySelectorAll('a');
+        if (anchors.length >= 2) {
+          anchors[0].setAttribute('href', '/terms');
+          anchors[0].removeAttribute('target');
+          const p1 = anchors[0].querySelectorAll('p');
+          p1.forEach(p => p.textContent = 'Terms & Conditions');
+          
+          anchors[1].setAttribute('href', '/privacy');
+          anchors[1].removeAttribute('target');
+          const p2 = anchors[1].querySelectorAll('p');
+          p2.forEach(p => p.textContent = 'Privacy Policy');
+        }
+      }
+    }
+
+    function fitReadinessText() {
+      const svgs = document.querySelectorAll(".framer-18rwfdg svg");
+      for (let i = 0; i < svgs.length; i++) {
+        const svg = svgs[i];
+        svg.style.overflow = "visible";
+        const fo = svg.querySelector("foreignObject");
+        if (!fo) continue;
+        fo.style.overflow = "visible";
+        const p = fo.querySelector("p");
+        if (!p) continue;
+        p.style.whiteSpace = "nowrap";
+        const scrollW = p.scrollWidth;
+        const clientW = p.clientWidth || 620;
+        if (scrollW > clientW) {
+          const ratio = Math.min(1, (clientW / scrollW) * 0.98);
+          fo.setAttribute("transform", "scale(" + ratio + ")");
+          fo.style.transformOrigin = "left center";
+        }
+      }
+    }
+
     function sanitizeLinks() {
       if (!document.body) return;
       const anchors = document.querySelectorAll('a');
       for (let i = 0; i < anchors.length; i++) {
         const a = anchors[i];
+        const text = (a.textContent || '').trim().toLowerCase();
         const href = a.getAttribute('href') || '';
+
+        // Match Join Pilot, Generate Kit, Generate Prep Kit, Get in touch -> https://app.usepilot.cfd/login
         if (
+          text.includes('join pilot') ||
+          text.includes('generate kit') ||
+          text.includes('generate prep kit') ||
+          text.includes('get in touch') ||
+          text === 'join' ||
+          a.closest('.framer-s2dpv2-container') ||
+          a.closest('.framer-1gp3g2k-container')
+        ) {
+          a.setAttribute('href', 'https://app.usepilot.cfd/login');
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+        } else if (href === '/terms' || href.endsWith('/terms')) {
+          a.setAttribute('href', '/terms');
+          a.removeAttribute('target');
+        } else if (href === '/privacy' || href.endsWith('/privacy')) {
+          a.setAttribute('href', '/privacy');
+          a.removeAttribute('target');
+        } else if (
           href.includes('contra.com') ||
           href.includes('slack.com') ||
           href.includes('contralabs.com') ||
@@ -341,11 +415,45 @@
       }
     }
 
-    // Intercept clicks at capture phase so external navigation to Contra/Slack is 100% blocked
+    // Intercept clicks at capture phase so:
+    // 1. CTA buttons (Join Pilot, Generate Kit) route directly to https://app.usepilot.cfd/login
+    // 2. /terms and /privacy navigate to legal pages
+    // 3. external Contra links are blocked
     document.addEventListener('click', function(e) {
       const anchor = e.target.closest('a');
       if (!anchor) return;
+      const text = (anchor.textContent || '').trim().toLowerCase();
       const href = anchor.getAttribute('href') || '';
+
+      if (
+        text.includes('join pilot') ||
+        text.includes('generate kit') ||
+        text.includes('generate prep kit') ||
+        text.includes('get in touch') ||
+        text === 'join' ||
+        anchor.closest('.framer-s2dpv2-container') ||
+        anchor.closest('.framer-1gp3g2k-container')
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.open('https://app.usepilot.cfd/login', '_blank');
+        return false;
+      }
+
+      if (href === '/terms' || href.endsWith('/terms')) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = '/terms';
+        return false;
+      }
+
+      if (href === '/privacy' || href.endsWith('/privacy')) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.location.href = '/privacy';
+        return false;
+      }
+
       if (
         href.includes('contra.com') ||
         href.includes('slack.com') ||
@@ -389,10 +497,11 @@
           replaceNodeText(m.target);
         } else if (m.type === "childList") {
           for (let node of m.addedNodes) {
-            replaceNodeText(node); replaceImages(node); fixFooter();
+            replaceNodeText(node); replaceImages(node); fixFooter(); fixNavLogo(); fixFooterLinks();
           }
           sanitizeLinks();
           fitFeedbackText();
+          fitReadinessText();
         }
       }
     });
@@ -403,31 +512,20 @@
       characterData: true
     });
 
-    // Sweeper every 50ms for first 5 seconds, then every 300ms
-    let sweeps = 0;
-    const sweeper = setInterval(() => {
-      sweeps++;
+    setTimeout(() => {
       if (document.body) {
-        replaceNodeText(document.body); replaceImages(document.body); fixFooter();
+        replaceNodeText(document.body); replaceImages(document.body); fixFooter(); fixNavLogo(); fixFooterLinks();
         sanitizeLinks();
         fitFeedbackText();
+        fitReadinessText();
       }
-      if (sweeps > 100) {
-        clearInterval(sweeper);
-        setInterval(() => {
-          if (document.body) {
-            replaceNodeText(document.body); replaceImages(document.body); fixFooter();
-            sanitizeLinks();
-            fitFeedbackText();
-          }
-        }, 400);
-      }
-    }, 50);
+    }, 1000);
 
     document.addEventListener("DOMContentLoaded", () => {
-      replaceNodeText(document.body); replaceImages(document.body); fixFooter();
+      replaceNodeText(document.body); replaceImages(document.body); fixFooter(); fixNavLogo(); fixFooterLinks();
       sanitizeLinks();
       fitFeedbackText();
+      fitReadinessText();
     });
   })();
   </script>
@@ -441,6 +539,92 @@
     }
     .framer-4lH9J .framer-12i6tzi {
       width: 85% !important;
+    }
+
+    /* 1. Official 'P' Logo in Top Nav */
+    .framer-od7c68-container .framer-bb3cF,
+    .framer-od7c68-container .framer-NLAj7,
+    .framer-od7c68-container .framer-RuYMa {
+      background: url('/pilot-p-logo.png') no-repeat center / contain !important;
+      -webkit-mask: none !important;
+      mask: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      width: 32px !important;
+      height: 32px !important;
+    }
+    .framer-od7c68-container .framer-bb3cF::after,
+    .framer-od7c68-container .framer-NLAj7::after,
+    .framer-od7c68-container .framer-RuYMa::after {
+      display: none !important;
+      content: "" !important;
+    }
+
+    /* 2. Remove hanging green ribbon/flag from Navbar */
+    .framer-nd5fqi,
+    [data-framer-name="Banner Wrapper - New"],
+    [data-framer-name="Logo Banner"],
+    .framer-1rvzps9 {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    /* 3. Remove nav links (10-Stage Pipeline, Deterministic Core, Batch CLI Eval) from Navbar */
+    .framer-1391c00 > :not(.framer-3rqm0w-container),
+    .framer-120zae6-container,
+    .framer-ooszmu-container,
+    .framer-nu06wt-container {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    /* 4. Remove 'Practice Flashcards' button from Navbar */
+    .framer-14fuufm-container {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    /* 5. Remove 'Explore 10-Stage Pipeline' button from Hero section */
+    .framer-tlisl9,
+    [data-framer-name="Button wrapper"],
+    .framer-1v2kwvu-container {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    /* 6. Remove all Social Media Icons from Footer */
+    .framer-q92cxp,
+    [data-framer-name="Socials"] {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    /* 7. Remove 'Practice Flashcards' button from Footer */
+    .framer-1rssb3k-container,
+    .framer-zoepks > .framer-1rssb3k-container {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    /* 8. Footer links: Keep only Terms & Conditions and Privacy Policy */
+    .framer-b6ht15 .framer-mkxirh,
+    .framer-b6ht15 .framer-1tv3xrn {
+      display: none !important;
+    }
+
+    /* 9. Fix 'Readiness' text truncation */
+    .framer-18rwfdg svg.framer-m7bf2y,
+    .framer-18rwfdg svg {
+      overflow: visible !important;
+    }
+    .framer-18rwfdg foreignObject {
+      overflow: visible !important;
+    }
+    .framer-18rwfdg foreignObject p {
+      white-space: nowrap !important;
+      overflow: visible !important;
     }
   </style>
 
@@ -11050,9 +11234,7 @@
       width: 24px
     }
   </style><!-- Start of headEnd -->
-  <!-- Snippet: jYmKazhUs -->
-  <script>!function () { var analytics = window.analytics = window.analytics || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else { analytics.invoked = !0; analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "once", "off", "on", "addSourceMiddleware", "addIntegrationMiddleware", "setAnonymousId", "addDestinationMiddleware"]; analytics.factory = function (e) { return function () { var t = Array.prototype.slice.call(arguments); t.unshift(e); analytics.push(t); return analytics } }; for (var e = 0; e < analytics.methods.length; e++) { var key = analytics.methods[e]; analytics[key] = analytics.factory(key) } analytics.load = function (key, e) { var t = document.createElement("script"); t.type = "text/javascript"; t.async = !0; t.src = "https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js"; var n = document.getElementsByTagName("script")[0]; n.parentNode.insertBefore(t, n); analytics._loadOptions = e }; analytics._writeKey = "PZb446jhyXEAS5sIc6YYGkyxTt70C33d"; analytics.SNIPPET_VERSION = "5.2.0"; analytics.load("PZb446jhyXEAS5sIc6YYGkyxTt70C33d") } }(); var lastPath = location.pathname; var campaign = (function () { var p = new URLSearchParams(location.search); var map = { utm_source: "source", utm_medium: "medium", utm_campaign: "name", utm_term: "term", utm_content: "content" }; var c = {}; Object.keys(map).forEach(function (k) { var v = p.get(k); if (v) c[map[k]] = v }); return c })(); function context() { return Object.keys(campaign).length ? { campaign: campaign } : {} } function routeName(path) { var parts = (path || "").split("/").filter(Boolean); if (!parts.length) return "contra_labs_home"; return "contra_labs_" + parts.join("_").replace(/-/g, "_").toLowerCase() } function trackPage() { analytics.track("page", { action: "viewed", path: location.pathname, search: location.search || "", title: document.title || "", url: location.href, referrer: lastPath || document.referrer || "", name: routeName(location.pathname) }, { context: context() }); lastPath = location.pathname } function sectionOf(el) { var s = el.closest("header,footer,section,nav"); if (!s) return ""; if (s.tagName === "FOOTER") return "footer"; if (s.tagName === "HEADER" || s.tagName === "NAV") return "header"; var id = (s.id || "").toLowerCase(); if (/hero/.test(id)) return "hero"; if (/role/.test(id)) return "roles"; return s.tagName.toLowerCase() } function classify(a) { var href = a.getAttribute("href") || ""; var m = href.match(/contra-labs-network\/([^\/?#]+)/) || href.match(/\/jobs\/([^\/?#]+)/); if (m) return { name: "contra_labs_apply_" + m[1].split(/[?#]/)[0].replace(/\/$/, "").replace(/-/g, "_").toLowerCase() }; if (/calendly\.com\/partnerships-contra/.test(href)) return { name: "request_partnership" }; if (/#contra-labs-roles/.test(href)) { var links = [].slice.call(document.querySelectorAll('a[href*="#contra-labs-roles"]')); var idx = links.indexOf(a); return { name: idx <= 0 ? "apply_jobs_hero" : "apply_jobs_taste" } } if (/human-creativity-benchmark/.test(href) && !/\/research\//.test(href)) return { name: "view_human_creativity_benchmark" }; var txt = (a.textContent || "").trim().toLowerCase(); if (txt === "image") return { name: "leaderboard_tab_image" }; if (txt === "video") return { name: "leaderboard_tab_video" }; if (txt === "web design") return { name: "leaderboard_tab_web_design" }; return null } document.addEventListener("click", function (e) { var a = e.target.closest && e.target.closest("a,button"); if (!a) return; var c = classify(a); if (!c) return; var href = a.getAttribute("href") || ""; if (/^https?:\/\/contra\.com\/contra-labs-network\//.test(href)) { try { var aid = analytics.user && analytics.user().anonymousId && analytics.user().anonymousId(); if (aid) { var u = new URL(a.href); u.searchParams.set("ajs_aid", aid); a.href = u.toString() } } catch (err) { } } var props = { action: "tapped", button_name: c.name, section: sectionOf(a), page_path: location.pathname, link_text: (a.textContent || "").trim().replace(/\s+/g, " ").slice(0, 80) }; analytics.track("button", props, { context: context() }) }, true); function onRoute() { if (location.pathname !== lastPath) trackPage() } ["pushState", "replaceState"].forEach(function (m) { var orig = history[m]; history[m] = function () { var r = orig.apply(this, arguments); window.dispatchEvent(new Event("framerlocationchange")); return r } }); window.addEventListener("popstate", onRoute); window.addEventListener("framerlocationchange", onRoute); if (document.readyState !== "loading") trackPage(); else document.addEventListener("DOMContentLoaded", trackPage);</script>
-  <!-- SnippetEnd: jYmKazhUs -->
+  <!-- Analytics snippet removed -->
 
   <!-- End of headEnd -->
 
@@ -11104,33 +11286,23 @@
       transform: translate3d(0, -22px, 0) !important;
     }
 
-    /* Top Nav Logo override to PILOT (strictly scoped to top nav container) */
+    /* Top Nav Logo override to official 'P' logo */
     .framer-od7c68-container .framer-bb3cF,
     .framer-od7c68-container .framer-NLAj7,
     .framer-od7c68-container .framer-RuYMa {
-      background: none !important;
+      background: url('/pilot-p-logo.png') no-repeat center / contain !important;
       -webkit-mask: none !important;
       mask: none !important;
       display: inline-flex !important;
       align-items: center !important;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-      font-weight: 800 !important;
-      letter-spacing: 0.1em !important;
-      font-size: 15px !important;
-      color: #2b2b29 !important;
+      width: 32px !important;
+      height: 32px !important;
     }
     .framer-od7c68-container .framer-bb3cF::after,
-    .framer-od7c68-container .framer-NLAj7::after {
-      content: "PILOT" !important;
-      font-weight: 800 !important;
-      letter-spacing: 0.12em !important;
-      color: #2b2b29 !important;
-    }
+    .framer-od7c68-container .framer-NLAj7::after,
     .framer-od7c68-container .framer-RuYMa::after {
-      content: "v0.1" !important;
-      font-size: 10px !important;
-      color: #387478 !important;
-      margin-left: 4px !important;
+      display: none !important;
+      content: "" !important;
     }
 
     
