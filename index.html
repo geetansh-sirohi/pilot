@@ -279,15 +279,35 @@
 
 
     function fixNavLogo() {
+      // Desktop & Tablet Navbar
       const navLinks = document.querySelectorAll('.framer-od7c68-container .framer-3rqm0w-container a');
       for (let i = 0; i < navLinks.length; i++) {
         const a = navLinks[i];
-        if (!a.querySelector('img.pilot-nav-p-logo')) {
+        const existingImg = a.querySelector('img');
+        if (existingImg) {
+          existingImg.className = 'pilot-nav-logo';
+          existingImg.src = '/pilot-logo-dark.png';
+          existingImg.style.height = '18px';
+          existingImg.style.width = 'auto';
+          existingImg.style.display = 'block';
+          existingImg.style.objectFit = 'contain';
+        } else {
           a.style.setProperty('display', 'inline-flex', 'important');
           a.style.setProperty('align-items', 'center', 'important');
           a.style.setProperty('text-decoration', 'none', 'important');
-          a.innerHTML = '<img class="pilot-nav-p-logo" src="/pilot-p-logo.png" style="height: 32px; width: auto; display: block; object-fit: contain;" alt="Pilot" />';
+          a.innerHTML = '<img class="pilot-nav-logo" src="/pilot-logo-dark.png" style="height: 18px; width: auto; display: block; object-fit: contain;" alt="Pilot" />';
         }
+      }
+
+      // Mobile Navbar (Phone)
+      const mobileNav = document.querySelector('.framer-ljzm47-container .framer-zk8cs3');
+      if (mobileNav && !mobileNav.querySelector('.pilot-mobile-logo-link')) {
+        const mobLink = document.createElement('a');
+        mobLink.className = 'pilot-mobile-logo-link';
+        mobLink.href = './#hero';
+        mobLink.style.cssText = 'display: flex; align-items: center; text-decoration: none; margin-right: auto; padding-left: 4px;';
+        mobLink.innerHTML = '<img src="/pilot-logo-dark.png" style="height: 16px; width: auto; display: block; object-fit: contain;" alt="Pilot" />';
+        mobileNav.insertBefore(mobLink, mobileNav.firstChild);
       }
     }
 
@@ -506,23 +526,29 @@
       width: 85% !important;
     }
 
-    /* 1. Official 'P' Logo in Top Nav */
+    /* 1. Official Pilot Name Logo in Top Nav */
     .framer-od7c68-container .framer-bb3cF,
     .framer-od7c68-container .framer-NLAj7,
     .framer-od7c68-container .framer-RuYMa {
-      background: url('/pilot-p-logo.png') no-repeat center / contain !important;
+      background: url('/pilot-logo-dark.png') no-repeat center left / contain !important;
       -webkit-mask: none !important;
       mask: none !important;
       display: inline-flex !important;
       align-items: center !important;
-      width: 32px !important;
-      height: 32px !important;
+      width: 65px !important;
+      height: 18px !important;
     }
     .framer-od7c68-container .framer-bb3cF::after,
     .framer-od7c68-container .framer-NLAj7::after,
     .framer-od7c68-container .framer-RuYMa::after {
       display: none !important;
       content: "" !important;
+    }
+    .framer-od7c68-container .pilot-nav-logo {
+      height: 18px !important;
+      width: auto !important;
+      display: block !important;
+      object-fit: contain !important;
     }
 
     /* 2. Remove hanging green ribbon/flag from Navbar */
